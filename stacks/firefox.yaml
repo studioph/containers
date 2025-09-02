@@ -1,7 +1,7 @@
 services:
   firefox:
     container_name: firefox${FF_NUM?err}
-    image: jlesage/firefox:v25.07.2
+    image: docker.io/jlesage/firefox:v25.07.2
     ports:
       - ${FF_PORT?err}:5800
     volumes:
