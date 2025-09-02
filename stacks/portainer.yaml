@@ -1,0 +1,32 @@
+services:
+  portainer:
+    container_name: portainer
+    image: docker.io/portainer/portainer-ce:2.33.1-alpine
+    command: -H unix:///var/run/podman/podman.sock
+    restart: always
+    ports:
+      - 9443:9443
+    volumes:
+      - /var/run/podman/podman.sock:/var/run/podman/podman.sock
+      - data:/data
+    networks:
+      - portainer-net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512MiB
+        reservations:
+          cpus: '0.1'
+          memory: 128MiB
+
+networks:
+  portainer-net:
+    name: portainer
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_ip_masquerade: 'false'
+
+volumes:
+  data:
+    name: portainer.data
