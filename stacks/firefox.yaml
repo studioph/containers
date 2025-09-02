@@ -1,0 +1,34 @@
+services:
+  firefox:
+    container_name: firefox${FF_NUM?err}
+    image: jlesage/firefox:v25.07.2
+    ports:
+      - ${FF_PORT?err}:5800
+    volumes:
+      - config:/config
+      - downloads:/downloads
+    restart: unless-stopped
+    environment:
+      TZ: America/New_York
+      UMASK: 000
+      KEEP_APP_RUNNING: 1
+      DISPLAY_WIDTH: 1920
+      DISPLAY_HEIGHT: 1080
+      PUID: 1000
+      PGID: 1000
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4GiB
+        reservations:
+          cpus: '0.5'
+          memory: 1GiB
+    shm_size: 2GiB
+
+volumes:
+  config:
+    name: firefox${FF_NUM?err}.config
+  downloads:
+    name: downloads
+    external: true
