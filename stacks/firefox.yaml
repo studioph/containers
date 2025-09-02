@@ -25,6 +25,12 @@ services:
           cpus: '0.5'
           memory: 1GiB
     shm_size: 2GiB
+    networks:
+      - firefox
+
+networks:
+  firefox:
+    name: firefox
 
 volumes:
   config:
