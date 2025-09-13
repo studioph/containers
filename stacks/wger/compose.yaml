@@ -31,7 +31,7 @@ services:
     restart: unless-stopped
 
   nginx:
-    image: docker.io/library/nginx:1.29.1-alpine
+    image: docker.io/library/nginx:1.29.1
     container_name: wger-nginx
     depends_on:
       - web
