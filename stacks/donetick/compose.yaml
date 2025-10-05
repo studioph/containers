@@ -1,0 +1,22 @@
+services:
+  donetick:
+    image: docker.io/donetick/donetick:v0.1.64
+    container_name: donetick
+    ports:
+      - 2021:2021
+    environment:
+      DT_SQLITE_PATH: /donetick-data/donetick.db
+    volumes:
+      - ./config.yaml:/config/local.yaml:ro
+      - data:/donetick-data
+    restart: unless-stopped
+    networks:
+      - donetick
+
+networks:
+  donetick:
+    name: donetick
+
+volumes:
+  data:
+    name: donetick

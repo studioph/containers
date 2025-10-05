@@ -1,0 +1,7 @@
+name: studiop
+is_done_tick_dot_com: false
+database:
+  type: sqlite
+  migration: true
+server:
+  serve_frontend: true
