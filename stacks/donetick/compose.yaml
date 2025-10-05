@@ -6,6 +6,7 @@ services:
       - 2021:2021
     environment:
       DT_SQLITE_PATH: /donetick-data/donetick.db
+      DT_JWT_SECRET: ${JWT_SECRET?err}
     volumes:
       - ./config.yaml:/config/local.yaml:ro
       - data:/donetick-data
