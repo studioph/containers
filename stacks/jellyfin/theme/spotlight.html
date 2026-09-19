@@ -323,43 +323,6 @@
 				}
 			}
 
-			async function checkForUpdate(base, token, userId) {
-				const sessionDismissKey = 'abyss-update-dismissed';
-				const checkKey = 'abyss-update-checked-at';
-				if (sessionStorage.getItem(sessionDismissKey)) return;
-				if (Date.now() - Number(sessionStorage.getItem(checkKey) || 0) < 21600000) return;
-				try {
-					if (base && token && userId) {
-						const admin = await isAdminUser(base, token, userId);
-						if (!admin) return;
-					}
-					const response = await fetch('https://api.github.com/repos/AumGupta/abyss-jellyfin/releases/latest');
-					sessionStorage.setItem(checkKey, String(Date.now()));
-					if (!response.ok) return;
-					const data = await response.json();
-					const latest = (data.tag_name || '').replace(/^v/, '');
-					if (!latest || !semverGt(latest, ABYSS_SPOTLIGHT_VERSION)) return;
-					const muteKey = `abyss-update-muted-v${latest}`;
-					if (localStorage.getItem(muteKey)) return;
-					$('update-text').textContent = `Abyss v${latest} available, download and re-run the installer to update.`;
-					$('update-link').href = data.html_url || `https://github.com/AumGupta/abyss-jellyfin/releases/tag/v${latest}`;
-					$('update-toast').style.display = 'flex';
-					requestAnimationFrame(() => $('update-toast').classList.add('visible'));
-					const hideToast = () => {
-						$('update-toast').classList.remove('visible');
-						setTimeout(() => { $('update-toast').style.display = 'none'; }, 400);
-					};
-					$('update-dismiss').addEventListener('click', () => {
-						hideToast();
-						sessionStorage.setItem(sessionDismissKey, '1');
-					}, { once: true });
-					$('update-mute').addEventListener('click', () => {
-						hideToast();
-						localStorage.setItem(muteKey, '1');
-					}, { once: true });
-				} catch { /* Updates are optional when GitHub is unavailable. */ }
-			}
-
 			const base = getBaseUrl();
 			const { token, userId } = getAuth(base);
 			if (!base || !token || !userId) { $('empty').style.display = 'flex'; return; }
@@ -793,7 +756,6 @@
 				}
 			});
 
-			checkForUpdate(base, token, userId);
 			if (!document.hidden) resume();
 		})();
 	</script>
