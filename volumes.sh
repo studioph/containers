@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
 
 docker volume create \
   --opt type=nfs \
@@ -9,6 +8,6 @@ docker volume create \
 
 docker volume create \
   --opt type=nfs \
-  --opt device=:/mnt/storage/dwnloads \
+  --opt device=:/mnt/storage/downloads \
   --opt o=addr=qnap.studiop,tcp,rw,noexec,nconnect=16,nfsvers=4 \
   downloads

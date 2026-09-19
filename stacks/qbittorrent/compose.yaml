@@ -45,8 +45,6 @@ services:
       AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY?err}
       AWS_ENDPOINT: ${BACKUP_S3_ENDPOINT:-http://truenas.studiop:9000}
       AWS_ENDPOINT_PROTO: http
-    env_file:
-      - ./.secret.env
     volumes:
       - config:/backup:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
