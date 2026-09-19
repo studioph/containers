@@ -1,0 +1,64 @@
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:10.10.7
+    container_name: jellyfin
+    ports:
+      - 9696:8096
+    environment:
+      TZ: America/New_York
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - config:/config
+      - media:/data:ro
+    devices:
+      - /dev/dri:/dev/dri
+    restart: unless-stopped
+    labels:
+      - docker-volume-backup.stop-during-backup=jellyfin
+    networks:
+      - jellyfin-net
+    deploy:
+      resources:
+        limits:
+          memory: 4GiB
+        reservations:
+          cpus: '2'
+          memory: 2GiB
+
+  backup:
+    image: docker.io/offen/docker-volume-backup:v2.49.0
+    container_name: jellyfin-backup
+    restart: unless-stopped
+    environment:
+      AWS_S3_BUCKET_NAME: backup.containers.data
+      AWS_S3_PATH: jellyfin
+      AWS_ACCESS_KEY_ID: ${BACKUP_S3_ACCESS_KEY:-backup}
+      AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY?err}
+      AWS_ENDPOINT: ${BACKUP_S3_ENDPOINT:-http://truenas.studiop:9000}
+      AWS_ENDPOINT_PROTO: http
+      BACKUP_STOP_CONTAINER_LABEL: jellyfin
+      BACKUP_EXCLUDE_REGEXP: '^/backup/data/metadata|^/backup/cache'
+    volumes:
+      - config:/backup:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - jellyfin-net
+    deploy:
+      resources:
+        reservations:
+          cpus: '1'
+          memory: 512MiB
+        limits:
+          memory: 1GiB
+
+networks:
+  jellyfin-net:
+    name: jellyfin
+
+volumes:
+  config:
+    name: jellyfin-config
+  media:
+    name: media
+    external: true
