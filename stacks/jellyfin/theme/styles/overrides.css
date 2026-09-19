@@ -2,3 +2,17 @@
     --logo: url("../img/logo.svg");
     --background-image: none;
 }
+
+.MuiAppBar-root.MuiAppBar-colorTransparent,
+.MuiAppBar-root.MuiAppBar-colorDefault,
+.MuiAppBar-root {
+    background-color: transparent !important;
+}
+
+
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPopover-paper.MuiMenu-paper {
+    background: var(--secondary-background-transparent) !important;
+    backdrop-filter: blur(30px) !important;
+    border-radius: 30px !important;
+    margin-top: .4rem;
+}
