@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 ### Slimmed-down version of the install script to only do the HTML injection
 
