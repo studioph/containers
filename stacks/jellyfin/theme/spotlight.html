@@ -287,25 +287,6 @@
 				});
 			}
 
-			function getRandomArbitrary(min, max) {
-				return Math.random() * (max - min) + min;
-			}
-
-			function startZoom(image) {
-				zoomAnimation?.cancel();
-				zoomAnimation = null;
-				image.style.transform = 'scale(1) translate(0, 0)';
-				if (paused || reducedMotion.matches) return;
-				const upper = 2;
-				const lower = -2;
-				const panX = getRandomArbitrary(lower, upper).toFixed(2);
-				const panY = getRandomArbitrary(lower, upper).toFixed(2);
-				zoomAnimation = image.animate([
-					{ transform: 'scale(1) translate(0, 0)' },
-					{ transform: `scale(1.08) translate(${panX}%, ${panY}%)` }
-				], { duration: 9000, easing: 'linear', fill: 'forwards' });
-			}
-
 			function semverGt(a, b) {
 				const current = a.split('.').map(Number);
 				const installed = b.split('.').map(Number);
@@ -526,7 +507,6 @@
 					backdropImage.src = artwork.backdrop;
 					backdropImage.style.objectPosition = artwork.primaryBackdrop ? 'center center' : 'center 20%';
 					$('backdrop').classList.add('loaded');
-					startZoom(backdropImage);
 				} else {
 					zoomAnimation?.cancel();
 					zoomAnimation = null;
@@ -756,7 +736,6 @@
 					zoomAnimation = null;
 					stopAuto();
 				} else if (!paused) {
-					startZoom($('backdrop-img'));
 					startAuto();
 				}
 			});
