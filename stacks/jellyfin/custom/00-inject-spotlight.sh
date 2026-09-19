@@ -10,7 +10,7 @@ if ! grep -q "${LOADER_TAG}" "${INDEX_FILE}"; then
     echo "Injecting loader tag"
     html=$(<"${INDEX_FILE}")
     html=${html/<\/body>/${LOADER_TAG}<\/body>}
-    printf "%s" "${html}" > index.html
+    printf "%s" "${html}" > "${INDEX_FILE}"
 else
     echo "Loader tag already present"
 fi
