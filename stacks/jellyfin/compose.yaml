@@ -12,6 +12,7 @@ services:
     volumes:
       - config:/config
       - media:/data:ro
+      - ./custom:/config/custom-cont-init.d:ro
     devices:
       - /dev/dri:/dev/dri
     restart: unless-stopped
