@@ -15,7 +15,7 @@ services:
       UMASK: 000
     entrypoint: /app/qbittorrent-nox
     labels:
-      - docker-volume-backup.stop-during-backup=true
+      - docker-volume-backup.stop-during-backup=qbt
     volumes:
       - config:/config
       - downloads:/downloads
@@ -45,6 +45,7 @@ services:
       AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY?err}
       AWS_ENDPOINT: ${BACKUP_S3_ENDPOINT:-http://truenas.studiop:9000}
       AWS_ENDPOINT_PROTO: http
+      BACKUP_STOP_DURING_BACKUP_LABEL: qbt
     volumes:
       - config:/backup:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro

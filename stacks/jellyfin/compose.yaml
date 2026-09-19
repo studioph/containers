@@ -19,7 +19,7 @@ services:
       - /dev/dri:/dev/dri
     restart: unless-stopped
     labels:
-      - docker-volume-backup.stop-during-backup=true
+      - docker-volume-backup.stop-during-backup=jellyfin
     networks:
       - jellyfin-net
     deploy:
@@ -42,6 +42,7 @@ services:
       AWS_ENDPOINT: ${BACKUP_S3_ENDPOINT:-http://truenas.studiop:9000}
       AWS_ENDPOINT_PROTO: http
       BACKUP_EXCLUDE_REGEXP: '^/backup/data/metadata|^/backup/cache'
+      BACKUP_STOP_DURING_BACKUP_LABEL: jellyfin
     volumes:
       - config:/backup:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
