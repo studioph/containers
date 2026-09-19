@@ -1,52 +1,48 @@
-name: jellyfin
+name: qbittorrent
 services:
-  jellyfin:
-    image: lscr.io/linuxserver/jellyfin:12.1ubu2604-ls50
-    container_name: jellyfin
-    ports:
-      - 9696:8096
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:5.2.3-libtorrentv1
+    container_name: qbittorrent
     environment:
       TZ: America/New_York
-      PUID: 1000
-      PGID: 1000
-    volumes:
-      - config:/config
-      - media:/data:ro
-      - ./custom:/custom-cont-init.d:ro
-      - ./theme:/usr/share/jellyfin/web/ui:ro
-      - ./config.json:/usr/share/jellyfin/web/config.json:ro
-    devices:
-      - /dev/dri:/dev/dri
-    restart: unless-stopped
+      UMASK: 000
+    entrypoint: /app/qbittorrent-nox
     labels:
       - docker-volume-backup.stop-during-backup=true
+    volumes:
+      - config:/config
+      - downloads:/downloads
+    ports:
+      - ${QBT_PORT:-6881}:${QBT_PORT:-6881}
+      - ${QBT_PORT:-6881}:${QBT_PORT:-6881}/udp
+      - 8017:8080
+    restart: unless-stopped
     networks:
-      - jellyfin-net
+      - qbt-net
     deploy:
       resources:
         limits:
           memory: 4GiB
         reservations:
-          cpus: '2'
-          memory: 2GiB
+          cpus: '0.5'
+          memory: 1GiB
 
   backup:
     image: docker.io/offen/docker-volume-backup:v2.49.0
-    container_name: jellyfin-backup
+    container_name: qbt-backup
     restart: unless-stopped
     environment:
       AWS_S3_BUCKET_NAME: backup.containers.data
-      AWS_S3_PATH: jellyfin
+      AWS_S3_PATH: qbittorrent
       AWS_ACCESS_KEY_ID: ${BACKUP_S3_ACCESS_KEY:-backup}
       AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY?err}
       AWS_ENDPOINT: ${BACKUP_S3_ENDPOINT:-http://truenas.studiop:9000}
       AWS_ENDPOINT_PROTO: http
-      BACKUP_EXCLUDE_REGEXP: '^/backup/data/metadata|^/backup/cache'
     volumes:
       - config:/backup:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
-      - jellyfin-net
+      - qbt-net
     deploy:
       resources:
         reservations:
@@ -56,12 +52,12 @@ services:
           memory: 512MiB
 
 networks:
-  jellyfin-net:
-    name: jellyfin
+  qbt-net:
+    name: qbittorrent
 
 volumes:
-  config:
-    name: jellyfin-config
-  media:
-    name: media
+  downloads:
+    name: downloads
     external: true
+  config:
+    name: qbt-config
