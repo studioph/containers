@@ -1,0 +1,31 @@
+name: freshrss
+services:
+  freshrss:
+    image: lscr.io/linuxserver/freshrss:1.30.0
+    container_name: freshrss
+    environment:
+      PUID: '1000'
+      PGID: '1000'
+      TZ: America/New_York
+    volumes:
+      - config:/config
+    ports:
+      - 8888:80
+    restart: unless-stopped
+    networks:
+      - freshnet
+    deploy:
+      resources:
+        limits:
+          memory: 1GiB
+        reservations:
+          cpus: '0.5'
+          memory: 256MiB
+
+volumes:
+  config:
+    name: freshrss-config
+
+networks:
+  freshnet:
+    name: freshrss
