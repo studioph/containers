@@ -14,6 +14,7 @@ services:
       - media:/data:ro
       - ./custom:/custom-cont-init.d:ro
       - ./theme:/usr/share/jellyfin/web/ui:ro
+      - ./config.json:/usr/share/jellyfin/web/config.json:ro
     devices:
       - /dev/dri:/dev/dri
     restart: unless-stopped
