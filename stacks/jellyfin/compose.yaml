@@ -13,7 +13,7 @@ services:
       - config:/config
       - media:/data:ro
       - ./custom:/custom-cont-init.d:ro
-      - ./theme/scripts:/usr/share/jellyfin/web/ui:ro
+      - ./theme:/usr/share/jellyfin/web/ui:ro
     devices:
       - /dev/dri:/dev/dri
     restart: unless-stopped
