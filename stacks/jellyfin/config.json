@@ -32,7 +32,7 @@
   "menuLinks": [
     {
       "name": "Request",
-      "icon": "library_add",
+      "icon": "add_comment",
       "url": "https://docs.seerr.dev/"
     }
   ],
