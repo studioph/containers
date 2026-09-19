@@ -1,7 +1,7 @@
 name: jellyfin
 services:
   jellyfin:
-    image: lscr.io/linuxserver/jellyfin:10.10.7
+    image: lscr.io/linuxserver/jellyfin:10.11.11
     container_name: jellyfin
     ports:
       - 9696:8096
@@ -16,7 +16,7 @@ services:
       - /dev/dri:/dev/dri
     restart: unless-stopped
     labels:
-      - docker-volume-backup.stop-during-backup=jellyfin
+      - docker-volume-backup.stop-during-backup=true
     networks:
       - jellyfin-net
     deploy:
@@ -38,7 +38,6 @@ services:
       AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY?err}
       AWS_ENDPOINT: ${BACKUP_S3_ENDPOINT:-http://truenas.studiop:9000}
       AWS_ENDPOINT_PROTO: http
-      BACKUP_STOP_CONTAINER_LABEL: jellyfin
       BACKUP_EXCLUDE_REGEXP: '^/backup/data/metadata|^/backup/cache'
     volumes:
       - config:/backup:ro
