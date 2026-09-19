@@ -287,14 +287,19 @@
 				});
 			}
 
+			function getRandomArbitrary(min, max) {
+				return Math.random() * (max - min) + min;
+			}
+
 			function startZoom(image) {
 				zoomAnimation?.cancel();
 				zoomAnimation = null;
 				image.style.transform = 'scale(1) translate(0, 0)';
 				if (paused || reducedMotion.matches) return;
-				const angle = Math.random() * Math.PI * 2;
-				const panX = Math.cos(angle) * 1.5;
-				const panY = Math.sin(angle) * 1.5;
+				const upper = 2;
+				const lower = -2;
+				const panX = getRandomArbitrary(lower, upper).toFixed(2);
+				const panY = getRandomArbitrary(lower, upper).toFixed(2);
 				zoomAnimation = image.animate([
 					{ transform: 'scale(1) translate(0, 0)' },
 					{ transform: `scale(1.08) translate(${panX}%, ${panY}%)` }
