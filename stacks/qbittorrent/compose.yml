@@ -1,7 +1,14 @@
 name: qbittorrent
 services:
   qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:5.2.3-libtorrentv1
+    image: studiop/qbittorrent:${QBITTORRENT_VERSION}-${VUETORRENT_VERSION}
+    build:
+      context: .
+      args:
+        QBITTORRENT_VERSION: ${QBITTORRENT_VERSION}
+        VUETORRENT_VERSION: ${VUETORRENT_VERSION}
+      tags:
+        - studiop/qbittorrent:${QBITTORRENT_VERSION}-${VUETORRENT_VERSION}
     container_name: qbittorrent
     environment:
       TZ: America/New_York
