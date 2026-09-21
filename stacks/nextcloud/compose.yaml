@@ -124,6 +124,7 @@ services:
       AWS_ACCESS_KEY_ID: ${BACKUP_S3_ACCESS_KEY:-backup}
       AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY?err}
       AWS_ENDPOINT_URL: ${BACKUP_S3_URL:-http://truenas.studiop:9000}
+      AWS_PATH_STYLE: 'true'
     networks:
       - db-net
       - nc-net
