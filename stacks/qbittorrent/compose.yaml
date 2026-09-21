@@ -24,6 +24,7 @@ services:
       - ${QBT_PORT:-6881}:${QBT_PORT:-6881}/udp
       - 8017:8080
     restart: unless-stopped
+    stop_grace_period: 30s
     networks:
       - qbt-net
     deploy:
