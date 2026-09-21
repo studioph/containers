@@ -145,7 +145,7 @@ services:
       AWS_ENDPOINT_PROTO: http
       BACKUP_STOP_CONTAINER_LABEL: nextcloud
     volumes:
-      - data:/backup:ro
+      - config:/backup:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - nc-net
