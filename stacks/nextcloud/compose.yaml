@@ -1,7 +1,7 @@
 name: nextcloud
 services:
   nextcloud:
-    image: docker.io/library/nextcloud:31.0.14
+    image: docker.io/library/nextcloud:32.0.15
     container_name: nextcloud
     restart: unless-stopped
     stop_grace_period: 30s
@@ -33,6 +33,8 @@ services:
       OBJECTSTORE_S3_USEPATH_STYLE: 'true'
       PHP_UPLOAD_LIMIT: 5G
       PHP_MEMORY_LIMIT: 2G
+      NEXTCLOUD_INIT_HTACCESS: '1'
+      NEXTCLOUD_UPDATE: '1'
     labels:
       - docker-volume-backup.stop-during-backup=nextcloud
     networks:
