@@ -1,0 +1,48 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "schedule:weekends"
+  ],
+  // "packageRules": [
+  //   {
+  //     "description": "Automatically merge minor and patch-level updates",
+  //     "matchUpdateTypes": [
+  //       "minor",
+  //       "patch",
+  //       "digest"
+  //     ],
+  //     "automerge": true,
+  //     // Force Renovate to not create a PR (but merge its branches directly), to avoid PR-related email spam
+  //     "automergeType": "branch"
+  //   }
+  // ],
+  "labels": [
+    "type:dependencies",
+    "deptype:{{{manager}}}",
+    "updatetype:{{updateType}}"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "datasourceTemplate": "github-releases",
+      "managerFilePatterns": [
+        "/.*.env$/"
+      ],
+      "matchStrings": [
+        "/# renovate: repo=(?<depName>\\S+)\\n\\w+=(?<currentValue>v?.*?)$/"
+      ]
+    },
+    // Docker tags specified in ENV files
+    {
+      "customType": "regex",
+      "datasourceTemplate": "docker",
+      "managerFilePatterns": [
+        "/.*.env$/"
+      ],
+      "matchStrings": [
+        "/# renovate: image=(?<depName>\\S+)\\n\\w+=(?<currentValue>v?.*?)$/"
+      ]
+    }
+  ]
+}
