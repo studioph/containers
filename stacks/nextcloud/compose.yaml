@@ -1,0 +1,173 @@
+name: nextcloud
+services:
+  nextcloud:
+    image: docker.io/library/nextcloud:30.0.17
+    container_name: nextcloud
+    restart: unless-stopped
+    ports:
+      - 8880:80
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - config:/var/www/html
+    environment:
+      # TZ: America/New_York
+      # PUID: 1000
+      # PGID: 1000
+      MYSQL_PASSWORD: ${NC_DB_PWD?err}
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_HOST: nextcloud-db
+      REDIS_HOST: nextcloud-redis
+      NEXTCLOUD_ADMIN_USER: admin
+      NEXTCLOUD_ADMIN_PASSWORD: ${NC_ADMIN_PWD?err}
+      NEXTCLOUD_TRUSTED_DOMAINS: localhost apps.studiop
+      OBJECTSTORE_S3_HOST: ${NC_S3_HOST:-http://truenas.studiop:9000}
+      OBJECTSTORE_S3_BUCKET: nextcloud
+      OBJECTSTORE_S3_KEY: ${NC_S3_ACCESS_KEY:-nextcloud}
+      OBJECTSTORE_S3_SECRET: ${NC_S3_SECRET_KEY?err}
+      OBJECTSTORE_S3_PORT: ${NC_S3_PORT:-9000}
+      OBJECTSTORE_S3_SSL: 'false'
+      OBJECTSTORE_S3_USEPATH_STYLE: 'true'
+      PHP_UPLOAD_LIMIT: 5G
+      PHP_MEMORY_LIMIT: 2G
+    labels:
+      - docker-volume-backup.stop-during-backup=nextcloud
+    networks:
+      - nc-net
+    deploy:
+      resources:
+        limits:
+          memory: 2GiB
+        reservations:
+          cpus: '1'
+          memory: 512MiB
+
+  db:
+    image: docker.io/library/mariadb:10.11.19
+    container_name: nextcloud-db
+    restart: unless-stopped
+    command:
+      - --transaction-isolation=READ-COMMITTED
+      - --binlog-format=ROW
+      - --innodb-read-only-compressed=OFF
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${NC_DB_ROOT_PWD?err}
+      MYSQL_PASSWORD: ${NC_DB_PWD?err}
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+    networks:
+      - nc-net
+      - db-net
+    deploy:
+      resources:
+        limits:
+          memory: 1GiB
+        reservations:
+          cpus: '0.5'
+          memory: 512MiB
+
+  redis:
+    image: docker.io/library/redis:8.6.6
+    container_name: nextcloud-redis
+    restart: unless-stopped
+    volumes:
+      - redis:/data
+    networks:
+      - nc-net
+    deploy:
+      resources:
+        limits:
+          memory: 512MiB
+        reservations:
+          cpus: '0.5'
+          memory: 256MiB
+
+  collabora:
+    image: docker.io/collabora/code:26.04.4.1.1
+    container_name: collabora
+    restart: unless-stopped
+    ports:
+      - 9980:9980
+    environment:
+      extra_params: --o:ssl.enable=false
+    networks:
+      - nc-net
+    deploy:
+      resources:
+        limits:
+          memory: 2GiB
+        reservations:
+          cpus: '0.5'
+          memory: 1GiB
+
+  db-backup:
+    image: docker.io/databack/mysql-backup:1.5.0
+    container_name: nextcloud-db-backup
+    restart: unless-stopped
+    command: backup
+    depends_on:
+      - db
+    environment:
+      DB_SERVER: nextcloud-db
+      DB_USER: nextcloud
+      DB_PASS: ${NC_DB_PWD?err}
+      DB_NAMES: nextcloud
+      DB_DUMP_BEGIN: '0500'
+      DB_DUMP_TARGET: s3://backup.containers.db/nextcloud
+      AWS_ACCESS_KEY_ID: ${BACKUP_S3_ACCESS_KEY:-backup}
+      AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY?err}
+      AWS_ENDPOINT_URL: ${BACKUP_S3_URL:-http://truenas.studiop:9000}
+    networks:
+      - db-net
+      - nc-net
+    deploy:
+      resources:
+        limits:
+          memory: 512MiB
+        reservations:
+          cpus: '0.5'
+          memory: 256MiB
+
+  backup:
+    image: docker.io/offen/docker-volume-backup:v2.49.0
+    container_name: nextcloud-backup
+    restart: unless-stopped
+    environment:
+      AWS_S3_BUCKET_NAME: backup.containers.data
+      AWS_S3_PATH: nextcloud
+      AWS_ACCESS_KEY_ID: ${BACKUP_S3_ACCESS_KEY:-backup}
+      AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY?err}
+      AWS_ENDPOINT: ${BACKUP_S3_ENDPOINT:-http://truenas.studiop:9000}
+      AWS_ENDPOINT_PROTO: http
+      BACKUP_STOP_CONTAINER_LABEL: nextcloud
+    volumes:
+      - data:/backup:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - nc-net
+    deploy:
+      resources:
+        limits:
+          memory: 512MiB
+        reservations:
+          cpus: '0.5'
+          memory: 256MiB
+
+networks:
+  db-net:
+    name: databases
+    external: true
+  nc-net:
+    name: nextcloud
+
+volumes:
+  redis:
+    name: redis
+  config:
+    name: nextcloud-config
+  db:
+    name: nextcloud-db
