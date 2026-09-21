@@ -1,9 +1,10 @@
 name: nextcloud
 services:
   nextcloud:
-    image: docker.io/library/nextcloud:30.0.17
+    image: docker.io/library/nextcloud:31.0.14
     container_name: nextcloud
     restart: unless-stopped
+    stop_grace_period: 30s
     ports:
       - 8880:80
     depends_on:
@@ -48,6 +49,7 @@ services:
     image: docker.io/library/mariadb:10.11.19
     container_name: nextcloud-db
     restart: unless-stopped
+    stop_grace_period: 30s
     command:
       - --transaction-isolation=READ-COMMITTED
       - --binlog-format=ROW
