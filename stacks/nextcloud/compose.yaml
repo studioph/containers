@@ -61,6 +61,7 @@ services:
       MYSQL_PASSWORD: ${NC_DB_PWD?err}
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
+      MARIADB_AUTO_UPGRADE: '1'
     networks:
       - nc-net
       - db-net
