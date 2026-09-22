@@ -26,6 +26,7 @@ services:
       NEXTCLOUD_TRUSTED_DOMAINS: localhost apps.studiop
       OBJECTSTORE_S3_HOST: ${NC_S3_HOST:-truenas.studiop}
       OBJECTSTORE_S3_BUCKET: nextcloud
+      OBJECTSTORE_S3_REGION: us-east-1
       OBJECTSTORE_S3_KEY: ${NC_S3_ACCESS_KEY:-nextcloud}
       OBJECTSTORE_S3_SECRET: ${NC_S3_SECRET_KEY?err}
       OBJECTSTORE_S3_PORT: ${NC_S3_PORT:-9000}
