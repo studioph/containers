@@ -128,7 +128,7 @@ services:
       AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY?err}
       AWS_ENDPOINT_URL: ${BACKUP_S3_URL:-http://truenas.studiop:9000}
       AWS_PATH_STYLE: 'true'
-      AWS_REGION: 'auto'
+      AWS_REGION: us-east-1
     networks:
       - db-net
       - nc-net
