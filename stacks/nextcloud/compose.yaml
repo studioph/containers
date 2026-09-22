@@ -120,6 +120,7 @@ services:
     environment:
       DB_CONFIG_FILE: /config.yaml
       DB_PASS: ${NC_DB_PWD?err}
+      AWS_ACCESS_KEY_ID: ${BACKUP_S3_ACCESS_KEY:-backup}
       AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY?err}
     volumes:
       - ./dump.yaml:/config.yaml:ro

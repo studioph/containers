@@ -3,7 +3,7 @@ kind: local
 spec:
   dump:
     schedule:
-      begin: 0500
+      begin: '0500'
     targets:
       - truenas
   database:
@@ -18,5 +18,4 @@ spec:
         region: us-east-1
         endpoint: http://truenas.studiop:9000
         pathStyle: true
-        accessKeyID: backup
   logging: debug
