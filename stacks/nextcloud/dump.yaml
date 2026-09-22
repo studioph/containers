@@ -1,0 +1,22 @@
+version: config.databack.io/v1
+kind: local
+spec:
+  dump:
+    schedule:
+      begin: 0500
+    targets:
+      - truenas
+  database:
+    server: nextcloud-db
+    credentials:
+      username: nextcloud
+  targets:
+    truenas:
+      type: s3
+      url: s3://backup.containers.db/nextcloud
+      spec:
+        region: us-east-1
+        endpoint: http://truenas.studiop:9000
+        pathStyle: true
+        accessKeyID: backup
+  logging: debug
