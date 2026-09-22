@@ -3,7 +3,7 @@ services:
   libredb-studio:
     container_name: libredb-studio
     image: ghcr.io/libredb/libredb-studio:0.16.2
-    restart: unless_stopped
+    restart: unless-stopped
     ports:
       - 3000:3000
     networks:
