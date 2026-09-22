@@ -1,0 +1,26 @@
+name: adminer
+services:
+  adminer:
+    container_name: adminer
+    image: docker.io/library/adminer:6.0.1
+    restart: unless-stopped
+    ports:
+      - 3000:8080
+    networks:
+      - admin-net
+      - db-net
+    deploy:
+      resources:
+        limits:
+          memory: 256MiB
+        reservations:
+          cpus: '0.5'
+          memory: 128MiB
+
+networks:
+  admin-net:
+    name: admin
+  db-net:
+    name: databases
+    internal: true
+    external: true
