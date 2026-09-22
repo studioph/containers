@@ -8,6 +8,7 @@ services:
       - 3000:3000
     networks:
       - db-net
+      - admin-net
     deploy:
       resources:
         limits:
@@ -21,3 +22,5 @@ networks:
     name: databases
     external: true
     internal: true
+  admin-net:
+    name: admin
