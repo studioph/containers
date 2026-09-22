@@ -19,6 +19,7 @@ services:
     volumes:
       - config:/config
       - downloads:/downloads
+      - ./init:/custom-cont-init.d:ro
     ports:
       - ${QBT_PORT:-6881}:${QBT_PORT:-6881}
       - ${QBT_PORT:-6881}:${QBT_PORT:-6881}/udp
