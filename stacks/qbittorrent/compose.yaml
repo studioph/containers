@@ -13,7 +13,6 @@ services:
     environment:
       TZ: America/New_York
       UMASK: 000
-    entrypoint: /app/qbittorrent-nox
     labels:
       - docker-volume-backup.stop-during-backup=qbt
     volumes:
