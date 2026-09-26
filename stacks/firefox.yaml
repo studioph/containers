@@ -1,11 +1,12 @@
 name: firefox
 services:
   firefox:
+    container_name: firefox-${NUM?err}
     image: docker.io/jlesage/firefox:v26.09.1
     ports:
-      - 5801-5803:5800
+      - 580${NUM?err}:5800
     volumes:
-      - /config
+      - config:/config
       - downloads:/downloads
     restart: unless-stopped
     environment:
@@ -17,7 +18,6 @@ services:
       PUID: 1000
       PGID: 1000
     deploy:
-      replicas: 3
       resources:
         limits:
           memory: 8GiB
@@ -31,7 +31,10 @@ services:
 networks:
   ff-net:
     name: firefox
+
 volumes:
+  config:
+    name: firefox${NUM?err}-config
   downloads:
     name: downloads
     external: true
