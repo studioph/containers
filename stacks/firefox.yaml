@@ -1,12 +1,12 @@
+name: firefox
 services:
   firefox:
-    container_name: firefox${FF_NUM?err}
-    image: docker.io/jlesage/firefox:v25.07.2
+    image: docker.io/jlesage/firefox:v26.09.1
     ports:
-      - ${FF_PORT?err}:5800
+      - 5800:5800
     volumes:
       - config:/config
-      - /var/mnt/downloads:/downloads
+      - downloads:/downloads
     restart: unless-stopped
     environment:
       TZ: America/New_York
@@ -17,21 +17,17 @@ services:
       PUID: 1000
       PGID: 1000
     deploy:
+      replicas: 3
       resources:
         limits:
-          cpus: '2'
-          memory: 4GiB
+          memory: 8GiB
         reservations:
           cpus: '0.5'
           memory: 1GiB
-    shm_size: 2GiB
-    networks:
-      - firefox
-
-networks:
-  firefox:
-    name: firefox
+    shm_size: 4GiB
 
 volumes:
   config:
-    name: firefox${FF_NUM?err}.config
+  downloads:
+    name: downloads
+    external: true
