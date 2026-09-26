@@ -3,9 +3,9 @@ services:
   firefox:
     image: docker.io/jlesage/firefox:v26.09.1
     ports:
-      - 5800:5800
+      - 5801-5803:5800
     volumes:
-      - config:/config
+      - /config
       - downloads:/downloads
     restart: unless-stopped
     environment:
@@ -25,9 +25,13 @@ services:
           cpus: '0.5'
           memory: 1GiB
     shm_size: 4GiB
+    networks:
+      - ff-net
 
+networks:
+  ff-net:
+    name: firefox
 volumes:
-  config:
   downloads:
     name: downloads
     external: true
