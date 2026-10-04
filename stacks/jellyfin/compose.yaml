@@ -30,7 +30,7 @@ services:
           memory: 2GiB
 
   backup:
-    image: docker.io/offen/docker-volume-backup:v2.49.0
+    image: docker.io/offen/docker-volume-backup:v2.49.1
     container_name: jellyfin-backup
     restart: unless-stopped
     environment:
