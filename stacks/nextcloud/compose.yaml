@@ -49,7 +49,7 @@ services:
           memory: 512MiB
 
   db:
-    image: docker.io/library/mariadb:10.11.19
+    image: docker.io/library/mariadb:13.0.2
     container_name: nextcloud-db
     restart: unless-stopped
     stop_grace_period: 30s
