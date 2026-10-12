@@ -22,6 +22,9 @@
     "deptype:{{{manager}}}",
     "updatetype:{{updateType}}"
   ],
+  "docker-compose": {
+    "managerFilePatterns": ["stacks/*.yaml"]
+  },
   "customManagers": [
     {
       "customType": "regex",
