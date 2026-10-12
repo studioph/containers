@@ -77,7 +77,7 @@ services:
           memory: 512MiB
 
   redis:
-    image: docker.io/library/redis:8.6.6
+    image: docker.io/library/redis:8.10.2
     container_name: nextcloud-redis
     restart: unless-stopped
     volumes:
