@@ -1,5 +1,5 @@
 ARG QBITTORRENT_VERSION
-FROM lscr.io/linuxserver/qbittorrent:${QBITTORRENT_VERSION}-libtorrentv1
+FROM lscr.io/linuxserver/qbittorrent:${QBITTORRENT_VERSION}
 ARG VUETORRENT_VERSION
 
 WORKDIR /app
