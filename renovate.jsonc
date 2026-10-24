@@ -33,7 +33,7 @@
         "/.*.env$/"
       ],
       "matchStrings": [
-        "/#\\s+renovate:\\s+repo=(?<depName>\\S+)\\S*\\n\\w+=(?<currentValue>v?.+)\\S*/"
+        "#\\s+renovate:\\s+repo=(?<depName>\\S+)\\S*\\n.+_VERSION=(?<currentValue>.+)\\S*"
       ]
     },
     // Docker tags specified in ENV files
@@ -44,7 +44,7 @@
         "/.*.env$/"
       ],
       "matchStrings": [
-        "/#\\s+renovate:\\s+image=(?<depName>\\S+)\\S*\\n\\w+=(?<currentValue>v?.+)\\S*/"
+        "#\\s+renovate:\\s+image=(?<depName>\\S+)\\S*\\n.+_VERSION=(?<currentValue>.+)\\S*"
       ]
     }
   ]
