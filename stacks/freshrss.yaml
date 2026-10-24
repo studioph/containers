@@ -1,7 +1,7 @@
 name: freshrss
 services:
   freshrss:
-    image: lscr.io/linuxserver/freshrss:1.30.0
+    image: lscr.io/linuxserver/freshrss:1.30.4
     container_name: freshrss
     environment:
       PUID: '1000'
