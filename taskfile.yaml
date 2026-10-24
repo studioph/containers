@@ -1,0 +1,10 @@
+version: '3'
+
+tasks:
+  renovate:lint:
+    cmds:
+      - renovate --platform=local --repository-cache=reset
+    env:
+      LOG_LEVEL: debug
+
+  volumes:init: ./volumes.sh
