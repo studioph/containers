@@ -42,8 +42,8 @@ services:
     environment:
       AWS_S3_BUCKET_NAME: backup.containers.data
       AWS_S3_PATH: qbittorrent
-      AWS_ACCESS_KEY_ID: ${BACKUP_S3_ACCESS_KEY:-backup}
-      AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY?err}
+      AWS_ACCESS_KEY_ID: ${BACKUP_S3_USER:-backup}
+      AWS_SECRET_ACCESS_KEY_FILE: /run/secrets/backup_s3
       AWS_ENDPOINT: ${BACKUP_S3_ENDPOINT:-http://truenas.studiop:9000}
       AWS_ENDPOINT_PROTO: http
       BACKUP_STOP_DURING_BACKUP_LABEL: qbt
@@ -59,6 +59,12 @@ services:
           memory: 256MiB
         limits:
           memory: 512MiB
+    secrets:
+      - backup_s3
+
+secrets:
+   backup_s3:
+     file: backup_s3.secret
 
 networks:
   qbt-net:
