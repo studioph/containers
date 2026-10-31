@@ -146,7 +146,7 @@ services:
       - db_password
 
   backup:
-    image: docker.io/offen/docker-volume-backup:v2.49.3
+    image: docker.io/offen/docker-volume-backup:v2.50.1
     container_name: nextcloud-backup
     restart: unless-stopped
     environment:

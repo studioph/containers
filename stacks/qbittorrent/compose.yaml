@@ -36,7 +36,7 @@ services:
           memory: 1GiB
 
   backup:
-    image: docker.io/offen/docker-volume-backup:v2.49.3
+    image: docker.io/offen/docker-volume-backup:v2.50.1
     container_name: qbt-backup
     restart: unless-stopped
     environment:
