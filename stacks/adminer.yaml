@@ -2,7 +2,7 @@ name: adminer
 services:
   adminer:
     container_name: adminer
-    image: docker.io/library/adminer:6.2.0
+    image: docker.io/library/adminer:6.3.0
     restart: unless-stopped
     ports:
       - 3000:8080
