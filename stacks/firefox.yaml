@@ -2,7 +2,7 @@ name: firefox
 services:
   firefox:
     container_name: firefox-${NUM?err}
-    image: docker.io/jlesage/firefox:v26.09.1
+    image: docker.io/jlesage/firefox:v26.11.3
     ports:
       - 580${NUM?err}:5800
     volumes:
