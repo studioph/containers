@@ -84,7 +84,7 @@ services:
       - db_password
 
   redis:
-    image: docker.io/library/redis:8.10.3
+    image: docker.io/library/redis:8.12.0
     container_name: nextcloud-redis
     restart: unless-stopped
     volumes:
